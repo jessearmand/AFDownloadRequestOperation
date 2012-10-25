@@ -49,14 +49,6 @@ typedef void (^AFURLConnectionProgressiveOperationProgressBlock)(NSInteger bytes
 
 @implementation AFDownloadRequestOperation
 
-@synthesize targetPath = _targetPath;
-@synthesize tempPath = _tempPath;
-@synthesize totalContentLength = _totalContentLength;
-@synthesize offsetContentLength = _offsetContentLength;
-@synthesize shouldResume = _shouldResume;
-@synthesize deleteTempFileOnCancel = _deleteTempFileOnCancel;
-@synthesize progressiveDownloadProgress = _progressiveDownloadProgress;
-
 #pragma mark - Static
 
 + (NSString *)cacheFolder {
@@ -204,7 +196,15 @@ typedef void (^AFURLConnectionProgressiveOperationProgressBlock)(NSInteger bytes
         }else if(!self.error) {
             // move file to final position and capture error
             @synchronized(self) {
-                [[NSFileManager new] moveItemAtPath:[self tempPath] toPath:_targetPath error:&localError];
+                NSFileManager *manager = [NSFileManager new];
+                NSURL *destinationURL = [NSURL fileURLWithPath:_targetPath];
+                NSURL *sourceURL = [NSURL fileURLWithPath:[self tempPath]];
+                NSString *backupItemName = [[sourceURL lastPathComponent] stringByAppendingString:@".backup"];
+                NSURL *targetURL;
+                [manager replaceItemAtURL:destinationURL withItemAtURL:sourceURL
+                           backupItemName:backupItemName
+                                  options:0 resultingItemURL:&targetURL error:&localError];
+                self.targetURL = targetURL;
                 if (localError) {
                     _fileError = localError;
                 }

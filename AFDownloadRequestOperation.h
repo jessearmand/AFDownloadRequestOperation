@@ -39,6 +39,11 @@
  */
 @property (strong) NSString *targetPath;
 
+/**
+ The resulting URL of the downloaded data. 
+ */
+@property (strong) NSURL *targetURL;
+
 /** 
  A Boolean value that indicates if we should try to resume the download. Defaults is `YES`.
 
