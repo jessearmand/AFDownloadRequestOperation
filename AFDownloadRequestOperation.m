@@ -204,7 +204,7 @@ typedef void (^AFURLConnectionProgressiveOperationProgressBlock)(NSInteger bytes
                 [manager replaceItemAtURL:destinationURL withItemAtURL:sourceURL
                            backupItemName:backupItemName
                                   options:0 resultingItemURL:&targetURL error:&localError];
-                self.targetURL = targetURL;
+                _targetURL = targetURL;
                 if (localError) {
                     _fileError = localError;
                 }

@@ -42,7 +42,7 @@
 /**
  The resulting URL of the downloaded data. 
  */
-@property (strong) NSURL *targetURL;
+@property (strong, readonly) NSURL *targetURL;
 
 /** 
  A Boolean value that indicates if we should try to resume the download. Defaults is `YES`.
